@@ -1,4 +1,5 @@
 = Bonita OpenAPI specification
+:toc:
 
 image:https://github.com/bonitasoft/bonita-openapi/workflows/build/badge.svg[Actions Status, link=https://github.com/bonitasoft/bonita-openapi/actions?query=build]
 image:https://img.shields.io/github/v/release/bonitasoft/bonita-openapi?color=blue&label=Release[GitHub release, link=https://github.com/bonitasoft/bonita-openapi/releases]
@@ -39,21 +40,31 @@ npm start
 
 This preview is the preferred one when editing the specification.
 
-=== Swagger Preview
+== Docker
+
 
 The `docker-compose.yaml` file at the project root starts two sites: a https://swagger.io/tools/swagger-ui/[swagger-ui] site and a Bonita instance to query
 
 To start the container, just issue the following comment at the project root:
 
 [source,bash]
+.dockerStart.sh
 ----
-docker-compose up -d
+include::dockerStart.sh[]
+----
+
+[source,bash]
+.dockerStop.sh
+----
+include::dockerStop.sh[]
 ----
 
 You should be able to access:
 
-- Bonita: http://bonita.localhost/bonita
-- Swagger UI: http://swagger.localhost
+- Traefik console: http://localhost:8888
+- Bonita: http://bonita.localhost:85/bonita
+- Swagger UI: http://swagger.localhost:85
+- Redoc UI: http://redoc.localhost:85
 
 NOTE: You can keep on editing the specification file and just refresh the browser to see the changes.
 
