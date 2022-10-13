@@ -1,0 +1,22 @@
+---
+ansible_ssh_private_key_file: "~/.ssh/presale-ci-eu-west-1.pem"
+admin_user: "ubuntu"
+docker_required_packages:
+  - "apt-transport-https"
+  - "ca-certificates"
+  - "curl"
+  - "gnupg-agent"
+  - "software-properties-common"
+  - "python3-pip"
+  - "python3-setuptools"
+docker_gpg_url: https://download.docker.com/linux/ubuntu/gpg
+docker_repo: deb https://download.docker.com/linux/ubuntu focal stable
+docker_packages:
+  - "docker-ce"
+  - "docker-ce-cli"
+  - "containerd.io"
+docker_compose_url: https://github.com/docker/compose/releases/download/1.28.2/docker-compose-Linux-x86_64
+bonita_user: ubuntu
+bonita_group: ubuntu
+local_folder: files
+bonita_folder: /home/ubuntu/bonita
