@@ -48,15 +48,15 @@ The `docker-compose.yaml` file at the project root starts two sites: a https://s
 To start the container, just issue the following comment at the project root:
 
 [source,bash]
-.dockerStart.sh
+../ansible/files/dockerStart.sh
 ----
-include::dockerStart.sh[]
+include::./ansible/files/dockerStart.sh[]
 ----
 
 [source,bash]
-.dockerStop.sh
+../ansible/files/dockerStop.sh
 ----
-include::dockerStop.sh[]
+include::./ansible/files/dockerStop.sh[]
 ----
 
 You should be able to access:
