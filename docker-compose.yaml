@@ -29,6 +29,16 @@ services:
       - ./dist/images/logo_bonitasoft_white.png:/usr/share/nginx/html/images/logo_bonitasoft_white.png
       - ./dist/images/rest_overview_v2.png:/usr/share/nginx/html/images/rest_overview_v2.png
 
+  redoc-ui:
+    image: redocly/redoc
+    labels:
+      - "traefik.http.routers.redoc.rule=Host(`redoc.localhost`)"
+      - "traefik.http.services.redoc.loadbalancer.server.port=80"
+    environment:
+      - SPEC_URL=spec/openapi.yml
+    volumes:
+      - ./dist/openapi.yaml:/usr/share/nginx/html/spec/openapi.yml
+
   bonita:
     image: bonita:7.15.0
     hostname: bonita
