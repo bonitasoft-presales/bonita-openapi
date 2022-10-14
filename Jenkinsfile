@@ -91,7 +91,7 @@ ssh -o StrictHostKeyChecking=no -i ~/.ssh/presale-ci-eu-west-1.pem  ubuntu@${pri
             stage("Deploy docker containers ") {
                 sh """
 cd ${WORKSPACE}/ansible
-ansible-playbook ansible_scenario.yaml -i ${WORKSPACE}/aws/private-inventory-${stackName}.yaml
+ansible-playbook ${WORKSPACE}/ansible/ansible_scenario.yaml -i ${WORKSPACE}/aws/private-inventory-${stackName}.yaml
 """
                 // FIXME
                 def bonitaUrl = "http://${publicDnsName}:8081/bonita/login.jsp"
