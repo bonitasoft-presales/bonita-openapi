@@ -32,9 +32,3 @@
     url: "{{ docker_compose_url }}"
     dest: /usr/local/bin/docker-compose
     mode: u+x,g+x,o+x
-
-- name: "login to {{ docker_registry_url }}"
-  docker_login:
-    registry: "{{ docker_registry_url }}"
-    username: "{{ docker_registry_user }}"
-    password: "{{ docker_registry_password }}"
