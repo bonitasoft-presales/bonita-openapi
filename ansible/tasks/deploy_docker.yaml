@@ -22,7 +22,6 @@
   docker_compose:
     project_src: "{{ bonita_folder }}/"
     files: "docker-compose.yml"
-    env_file: "docker.env"
     state: present
     pull: yes
     debug: yes
