@@ -63,9 +63,8 @@ node("${nodeName}") {
              stage("Create stack") {
                 sh """
 mkdir -p ${WORKSPACE}/target
-cd -p ${WORKSPACE}/target
-curl -o ${WORKSPACE}/target/bonita-aws-1.3-jar-with-dependencies.jar https://github.com/laurentleseigneur/bonita-aws/releases/download/bonita-aws-1.3/bonita-aws-1.3-jar-with-dependencies.jar
 cd ${WORKSPACE}/target
+curl -o ${WORKSPACE}/target/bonita-aws-1.3-jar-with-dependencies.jar https://github.com/laurentleseigneur/bonita-aws/releases/download/bonita-aws-1.3/bonita-aws-1.3-jar-with-dependencies.jar
 java -jar bonita-aws-1.3-jar-with-dependencies.jar -c create --stack-id ${stackName} --name ${normalizedGitRepoName} --key-file ${keyFileName}
 cp ${stackName}.yaml ${WORKSPACE}
 """
