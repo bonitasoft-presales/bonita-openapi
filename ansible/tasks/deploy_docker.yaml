@@ -20,7 +20,7 @@
 
 - name: Start Docker compose
   docker_compose:
-    project_src: "{{ bonita_folder }}/"
+    project_src: "{{ bonita_folder }}/files/"
     files: "docker-compose.yml"
     state: present
     pull: yes
