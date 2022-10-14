@@ -62,8 +62,11 @@ node("${nodeName}") {
 
              stage("Create stack") {
                 sh """
-cd ~/ansible/aws
-java -jar bonita-aws-${bonitaAwsVersion}-jar-with-dependencies.jar -c create --stack-id ${stackName} --name ${normalizedGitRepoName} --key-file ${keyFileName}
+mkdir -p ${WORKSPACE}/target
+cd -p ${WORKSPACE}/target
+curl -o ${WORKSPACE}/target/bonita-aws-1.3-jar-with-dependencies.jar https://github.com/laurentleseigneur/bonita-aws/releases/download/bonita-aws-1.3/bonita-aws-1.3-jar-with-dependencies.jar
+cd ${WORKSPACE}/target
+java -jar bonita-aws-1.3-jar-with-dependencies.jar -c create --stack-id ${stackName} --name ${normalizedGitRepoName} --key-file ${keyFileName}
 cp ${stackName}.yaml ${WORKSPACE}
 """
                 yamlStackProps = readYaml file: "${WORKSPACE}/${stackName}.yaml"
@@ -108,10 +111,6 @@ ansible-playbook ansible_scenario.yaml -i /home/bonita/ansible/aws/private-inven
                 yamlProps.global_parameters=[ [ name:'serverUrl',type:'String',value:"http://${yamlStackProps.publicDnsName}:8081/bonita"]]
                 writeYaml file:yamlFile, data:yamlProps
             }
-
-
-
-
         } // timestamps
     } // ansiColor
 } // node
