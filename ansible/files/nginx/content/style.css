@@ -1,0 +1,19 @@
+div{
+  margin: 1em;
+  display:inline;
+  min-width:5em;
+}
+
+a{
+  #background-color:yellow;
+    color:black;
+  font-family:arial;
+  font-family:arial;
+    font-size:32px;
+  text-decoration-line:none;
+
+}
+a:hover{
+   background-color:grey;
+  font-style:bold;
+}

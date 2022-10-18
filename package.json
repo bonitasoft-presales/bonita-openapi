@@ -5,7 +5,7 @@
   "scripts": {
     "start": "openapi preview-docs openapi/openapi.yaml",
     "test": "openapi lint",
-    "clean": "rm -rf dist/* && copyfiles -u 2 openapi/images/* dist/images/",
+    "clean": "rm -rf dist/* && copyfiles -u 2 docs/images/* dist/images/",
     "yaml": "openapi bundle -o dist/openapi.yaml -f",
     "json": "openapi bundle -o dist/openapi.json -f",
     "build": "npm run clean && npm run yaml && npm run json",
