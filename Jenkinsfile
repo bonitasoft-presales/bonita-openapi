@@ -91,12 +91,14 @@ ssh -o StrictHostKeyChecking=no -i ~/.ssh/presale-ci-eu-west-1.pem  ubuntu@${pri
             stage("Build open API resources") {
                 sh """
 cd ${WORKSPACE}
+
+# NOTE: requires npm on jenkins node, using commit files
+
 # clean & build openapi pivot files
 # add redoc images
-npm run build
-
+#npm run build
 # build postman collection file
-npm run package
+#npm run package
 
 # copy dist files to html static container
 mkdir -p ${WORKSPACE}/ansible/files/dist
