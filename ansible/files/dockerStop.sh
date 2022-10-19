@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-docker-compose -p open-api  down -v
+docker-compose -f docker-compose.yaml -p open-api  down -v

@@ -14,12 +14,7 @@ info:
     altText: "Bonita API"
     href: "https://documentation.bonitasoft.com/bonita/latest/rest-api-overview"
 servers:
-#  - url: 'https://localhost:8080/bonita'
-#  - url: 'https://bonita.localhost/bonita'
-    # access outside docker
-  - url: 'http://bonita.localhost:8081/bonita'
-    # access inside docker compose
-  - url: 'http://bonita:8080/bonita'
+  - url: 'http://localhost:8081/bonita'
 security:
   - bonita_auth: [ ]
     bonita_token: [ ]
