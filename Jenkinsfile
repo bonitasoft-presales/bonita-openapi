@@ -88,6 +88,26 @@ ssh -o StrictHostKeyChecking=no -i ~/.ssh/presale-ci-eu-west-1.pem  ubuntu@${pri
 """
             }
 
+            stage("Build open API resources") {
+                sh """
+cd ${WORKSPACE}
+# clean & build openapi pivot files
+# add redoc images
+npm run build
+
+# build postman collection file
+npm run package
+
+# copy dist files to html static container
+mkdir -p ${WORKSPACE}/ansible/files/dist
+cp -r ${WORKSPACE}/dist/ ${WORKSPACE}/ansible/files/dist/
+cp -r ${WORKSPACE}/dist/ ${WORKSPACE}/ansible/files/nginx/content/
+ls -ltr ${WORKSPACE}/ansible/files/dist/
+ls -ltr ${WORKSPACE}/ansible/files/nginx/content/
+
+"""
+}
+
             stage("Deploy docker containers ") {
                 sh """
 cd ${WORKSPACE}/ansible
