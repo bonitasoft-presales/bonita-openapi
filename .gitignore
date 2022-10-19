@@ -127,3 +127,6 @@ Desktop.ini
 *.*~
 *~
 .merge_file*
+
+nginx/content/*.yaml
+nginx/content/*.json

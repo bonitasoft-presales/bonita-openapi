@@ -20,11 +20,13 @@ The specification has a lot of _description block_ and since it is a _documentat
 npm run yaml # <1>
 npm run json # <2>
 
+npm run build #<3>
 ----
 <1> result file is `dist/openapi.yaml`
 <2> result file is `dist/openapi.json`
+<3> clean, yaml & json steps
 
-The specification file can be found here: `openapi/openapi.yaml`
+The specification file template can be found here: `openapi/openapi.yaml`
 
 We make use of https://swagger.io/docs/specification/openapi-extensions/[extensions] to add better support for some documentation sites (x-logo, x-codeSamples, ...)
 
