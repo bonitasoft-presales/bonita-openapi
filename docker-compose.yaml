@@ -1,42 +1,36 @@
 version: '3'
 services:
 
-  reverse-proxy:
-    # The official v2 Traefik docker image
-    image: traefik:v2.2
-    # Enables the web UI and tells Traefik to listen to docker
-    command: --api.insecure=true --providers.docker
+  nginx:
+    build: nginx
+    hostname: nginx
     ports:
-      # The HTTP port
-      - "80:80"
-      # The Web UI (enabled by --api.insecure=true)
-      - "8888:8080"
-    volumes:
-      # So that Traefik can listen to the Docker events
-      - /var/run/docker.sock:/var/run/docker.sock
+      - "8084:80"
 
   swagger-ui:
     image: swaggerapi/swagger-ui
-    labels:
-      - "traefik.http.routers.swagger.rule=Host(`swagger.localhost`)"
-      - "traefik.http.services.swagger.loadbalancer.server.port=8080"
+    hostname: swagger
+    ports:
+      - "8082:8080"
     environment:
       - SWAGGER_JSON=/openapi/openapi.yaml
     volumes:
-      - ./dist:/openapi
+      - ./dist/openapi.yaml:/openapi/openapi.yaml
+
+  redoc-ui:
+    image: redocly/redoc
+    hostname: redoc
+    ports:
+      - "8083:80"
+    environment:
+      - SPEC_URL=openapi.yaml
+    volumes:
+      - ./dist/openapi.yaml:/usr/share/nginx/html/openapi.yaml
+      - ./dist/images/logo_bonitasoft_white.png:/usr/share/nginx/html/images/logo_bonitasoft_white.png
+      - ./dist/images/rest_overview_v2.png:/usr/share/nginx/html/images/rest_overview_v2.png
 
   bonita:
-    image: bonita:7.10.5
-    labels:
-      - "traefik.http.routers.bonita.rule=Host(`bonita.localhost`)"
-      - "traefik.http.routers.bonita.middlewares=bonita-cors@docker"
-      - "traefik.http.middlewares.bonita-cors.headers.accessControlAllowMethods=*"
-      - "traefik.http.middlewares.bonita-cors.headers.accessControlExposeHeaders=*"
-      - "traefik.http.middlewares.bonita-cors.headers.accessControlAllowOriginList=http://swagger.localhost"
-      - "traefik.http.middlewares.bonita-cors.headers.accessControlMaxAge=100"
-      - "traefik.http.middlewares.bonita-cors.headers.addVaryHeader=true"
-#    healthcheck:
-#      test: [ "CMD", "curl", "-f", "http://bonita.localhost/bonita" ]
-#      interval: 1m30s
-#      timeout: 10s
-#      retries: 3
+    image: bonita:7.15.0
+    hostname: bonita
+    ports:
+      - "8081:8080"

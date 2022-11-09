@@ -83,7 +83,6 @@ local.properties
 ######################
 # Package Files
 ######################
-*.jar
 *.war
 *.ear
 *.db
@@ -128,3 +127,6 @@ Desktop.ini
 *.*~
 *~
 .merge_file*
+
+nginx/content/*.yaml
+nginx/content/*.json

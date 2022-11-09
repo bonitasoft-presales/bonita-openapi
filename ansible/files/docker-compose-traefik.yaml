@@ -1,0 +1,109 @@
+version: '3'
+services:
+
+  nginx:
+    build: nginx
+    networks:
+      - traefik-net
+    ports:
+      - "8085:80"
+  reverse-proxy:
+    # The official v2 Traefik docker image
+    image: traefik:v2.9
+    # Enables the web UI and tells Traefik to listen to docker
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker"
+      - "--entrypoints.web.address=:${TRAEFIK_PORT}"
+      - "--log.level=DEBUG"
+      - "--accesslog"
+      - "--log=true"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.entrypoints=web"
+    ports:
+      # The HTTP port
+      - "${TRAEFIK_PORT}:80"
+      # The Web UI (enabled by --api.insecure=true)
+      - "${TRAEFIK_ADMIN_PORT}:8080"
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    hostname: swagger
+    ports:
+      - 8087:8080
+    expose:
+      - 8080
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.swagger.rule=Host(`${HOSTNAME}`) && PathPrefix(`/swagger`)"
+      - "traefik.http.routers.swagger.entrypoints=web"
+      - "traefik.http.services.swagger.loadbalancer.server.port=8080"
+    environment:
+      - SWAGGER_JSON=/openapi/openapi.yaml
+    networks:
+      - traefik-net
+    volumes:
+      - ./openapi/openapi.yaml:/openapi/openapi.yaml
+
+  redoc-ui:
+    image: redocly/redoc
+    hostname: redoc
+    ports:
+      - 8089:80
+    expose:
+      - 80
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.redoc.rule=PathPrefix(`/redoc/`)"
+      - "traefik.http.routers.redoc.entrypoints=web"
+      - "traefik.http.services.redoc.loadbalancer.server.port=80"
+    environment:
+      - SPEC_URL=spec/openapi.yml
+    networks:
+      - traefik-net
+    volumes:
+      - ./openapi/openapi.yaml:/usr/share/nginx/html/spec/openapi.yml
+
+  whoami:
+    image: containous/whoami
+    hostname: whoami
+    expose:
+      - 80
+    networks:
+      - traefik-net
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.middlewares.whoami.addprefix.prefix=/whoami"
+#        - "traefik.http.routers.whoami.rule=Host(`${HOSTNAME}`) && PathPrefix(`/whoami`)"
+        - "traefik.http.services.whoami.loadbalancer.server.port=80"
+
+  bonita:
+    image: bonita:7.15.0
+    hostname: bonita
+    expose:
+      - 8080
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.bonita.rule=Host(`${HOSTNAME}`) && PathPrefix(`/bonita`)"
+      - "traefik.http.routers.bonita.entrypoints=web"
+      - "traefik.http.routers.bonita.middlewares=bonita-cors@docker"
+      - "traefik.http.middlewares.bonita-cors.headers.accessControlAllowMethods=*"
+      - "traefik.http.middlewares.bonita-cors.headers.accessControlExposeHeaders=*"
+      - "traefik.http.middlewares.bonita-cors.headers.accessControlAllowOriginList=*"
+      - "traefik.http.middlewares.bonita-cors.headers.accessControlMaxAge=100"
+      - "traefik.http.middlewares.bonita-cors.headers.addVaryHeader=true"
+    networks:
+      - traefik-net
+#    healthcheck:
+#      test: [ "CMD", "curl", "-f", "http://bonita.localhost/bonita" ]
+#      interval: 1m30s
+#      timeout: 10s
+#      retries: 3
+networks:
+  traefik-net:
+#    external: true

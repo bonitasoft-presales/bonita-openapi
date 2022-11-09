@@ -1,4 +1,5 @@
 = Bonita OpenAPI specification
+:toc:
 
 image:https://github.com/bonitasoft/bonita-openapi/workflows/build/badge.svg[Actions Status, link=https://github.com/bonitasoft/bonita-openapi/actions?query=build]
 image:https://img.shields.io/github/v/release/bonitasoft/bonita-openapi?color=blue&label=Release[GitHub release, link=https://github.com/bonitasoft/bonita-openapi/releases]
@@ -15,7 +16,17 @@ Based on this file, one could generate : documentation, client in different lang
 The specification file is written in `yaml` format because multiline support is much better than in `json`
 The specification has a lot of _description block_ and since it is a _documentation_, it needs to be quite verbose.
 
-The specification file can be found here: `openapi/openapi.yaml`
+----
+npm run yaml # <1>
+npm run json # <2>
+
+npm run build #<3>
+----
+<1> result file is `dist/openapi.yaml`
+<2> result file is `dist/openapi.json`
+<3> clean, yaml & json steps
+
+The specification file template can be found here: `openapi/openapi.yaml`
 
 We make use of https://swagger.io/docs/specification/openapi-extensions/[extensions] to add better support for some documentation sites (x-logo, x-codeSamples, ...)
 
@@ -39,21 +50,67 @@ npm start
 
 This preview is the preferred one when editing the specification.
 
-=== Swagger Preview
+=== Postman
+
+Generate a Postman json based collection file
+
+[source,bash]
+----
+ npm run postman #<1>
+----
+<1> result file is `dist/postman.json`
+
+== AWS Docker Deployment
 
 The `docker-compose.yaml` file at the project root starts two sites: a https://swagger.io/tools/swagger-ui/[swagger-ui] site and a Bonita instance to query
 
 To start the container, just issue the following comment at the project root:
 
 [source,bash]
+../ansible/files/dockerStart.sh
 ----
-docker-compose up -d
+include::./ansible/files/dockerStart.sh[]
+----
+
+[source,bash]
+../ansible/files/dockerStop.sh
+----
+include::./ansible/files/dockerStop.sh[]
 ----
 
 You should be able to access:
 
-- Bonita: http://bonita.localhost/bonita
-- Swagger UI: http://swagger.localhost
+- Traefik console: http://localhost:8888
+- Bonita: http://bonita.localhost:85/bonita
+- Swagger UI: http://swagger.localhost:85
+- Redoc UI: http://redoc.localhost:85
+
+NOTE: You can keep on editing the specification file and just refresh the browser to see the changes.
+
+== Local Docker Deployment
+
+The `docker-compose.yaml` file at the project root starts two sites: a https://swagger.io/tools/swagger-ui/[swagger-ui] site and a Bonita instance to query
+
+To start the container, just issue the following comment at the project root:
+
+[source,bash]
+./dockerStart.sh
+----
+include::./dockerStart.sh[]
+----
+
+[source,bash]
+./dockerStop.sh
+----
+include::./ansible/files/dockerStop.sh[]
+----
+
+You should be able to access:
+
+- Traefik console: http://localhost:8888
+- Bonita: http://bonita.localhost:85/bonita
+- Swagger UI: http://swagger.localhost:85
+- Redoc UI: http://redoc.localhost:85
 
 NOTE: You can keep on editing the specification file and just refresh the browser to see the changes.
 
