@@ -62,36 +62,20 @@ Generate a Postman json based collection file
 
 == AWS Docker Deployment
 
-The `docker-compose.yaml` file at the project root starts two sites: a https://swagger.io/tools/swagger-ui/[swagger-ui] site and a Bonita instance to query
-
-To start the container, just issue the following comment at the project root:
-
-[source,bash]
-../ansible/files/dockerStart.sh
-----
-include::./ansible/files/dockerStart.sh[]
-----
-
-[source,bash]
-../ansible/files/dockerStop.sh
-----
-include::./ansible/files/dockerStop.sh[]
-----
-
-You should be able to access:
-
-- Traefik console: http://localhost:8888
-- Bonita: http://bonita.localhost:85/bonita
-- Swagger UI: http://swagger.localhost:85
-- Redoc UI: http://redoc.localhost:85
-
-NOTE: You can keep on editing the specification file and just refresh the browser to see the changes.
+NOTE: TODO
 
 == Local Docker Deployment
 
 The `docker-compose.yaml` file at the project root starts two sites: a https://swagger.io/tools/swagger-ui/[swagger-ui] site and a Bonita instance to query
 
-To start the container, just issue the following comment at the project root:
+To start the whole content, just issue run:
+
+[source,bash]
+----
+./dockerStart.sh
+----
+
+=== Script details
 
 [source,bash]
 ./dockerStart.sh
@@ -105,14 +89,8 @@ include::./dockerStart.sh[]
 include::./ansible/files/dockerStop.sh[]
 ----
 
-You should be able to access:
+You should be able to access http://localhost:8084[http://localhost:8084]
 
-- Traefik console: http://localhost:8888
-- Bonita: http://bonita.localhost:85/bonita
-- Swagger UI: http://swagger.localhost:85
-- Redoc UI: http://redoc.localhost:85
-
-NOTE: You can keep on editing the specification file and just refresh the browser to see the changes.
 
 == Links
 
