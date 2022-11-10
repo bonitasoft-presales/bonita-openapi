@@ -1,0 +1,6 @@
+- name: parse nginx content file
+  ansible.builtin.template:
+    src: "{{ template_folder}}/index.html.j2"
+    dest: "{{ bonita_folder }}/files/nginx/content/index.html"
+    owner: "{{ bonita_user }}"
+    group: "{{ bonita_group }}"

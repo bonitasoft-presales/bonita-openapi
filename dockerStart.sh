@@ -1,16 +1,5 @@
 #!/usr/bin/env bash
 
-# clean & build openapi pivot files
-# add redoc images
-npm run build
-
-# build postman collection file
-npm run package
-
-# copy dist files to html static container
-cp dist/openapi.yaml nginx/content
-cp dist/postman.json nginx/content
-
 # stop existing stack
 ./dockerStop.sh
 

@@ -130,3 +130,4 @@ Desktop.ini
 
 nginx/content/*.yaml
 nginx/content/*.json
+/ansible/vars/aws_var.yaml

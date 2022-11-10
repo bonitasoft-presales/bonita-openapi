@@ -1,4 +1,4 @@
-  FROM nginx:1.23.1-alpine
+FROM nginx:1.23.1-alpine
 
-  COPY default.conf /etc/nginx/conf.d/default.conf
-  COPY content /www/data
+COPY default.conf /etc/nginx/conf.d/default.conf
+COPY content /www/data
