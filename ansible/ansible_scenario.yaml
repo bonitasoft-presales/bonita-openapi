@@ -4,9 +4,12 @@
   become: yes
   vars_files:
     - vars/default.yaml
+    - vars/aws_var.yaml
 
   tasks:
     - include_tasks: tasks/install_docker.yaml
+    - include_tasks: tasks/copy_files.yaml
+    - include_tasks: tasks/apply_templates.yaml
     - include_tasks: tasks/deploy_docker.yaml
 
 

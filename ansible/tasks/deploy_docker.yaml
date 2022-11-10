@@ -1,22 +1,19 @@
-- name: Ensures folder [{{bonita_folder}}] exists
-  file: path={{bonita_folder}} state=directory owner={{bonita_user}} group={{bonita_group}}
-
-- name: Copy files to [{{bonita_folder}}]
-  copy:
-    src: "{{ local_folder }}"
-    dest: "{{ bonita_folder }}"
-    owner: "{{ bonita_user }}"
-    group: "{{ bonita_group }}"
-
-- name: "Set folder {{ bonita_folder }} readable"
-  file:
-    path: "{{ bonita_folder }}"
-    owner: "{{ bonita_user }}"
-    group: "{{ bonita_group }}"
-
 - name: Pip install docker for Ansible's docker_login and docker_service modules
   pip:
     name: ["docker", "docker-compose"]
+
+- name: Shutdown Bonita Platform (Database and Runtime), if already running
+  docker_compose:
+    project_src: "{{ bonita_folder }}/files/"
+    files: "docker-compose.yaml"
+    state: absent
+    stopped: yes
+    remove_orphans: yes
+    remove_volumes: yes
+    remove_images: local
+    debug: yes
+    project_name: runtime
+
 
 - name: Start Docker compose
   docker_compose:
@@ -30,3 +27,7 @@
     remove_orphans: yes
     remove_volumes: yes
     remove_images: local
+
+- name: Site available
+  ansible.builtin.debug:
+    msg: "Open API demo site: http://{{ publicDnsName }}:8084"

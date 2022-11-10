@@ -19,4 +19,7 @@ docker_compose_url: https://github.com/docker/compose/releases/download/1.28.2/d
 bonita_user: ubuntu
 bonita_group: ubuntu
 local_folder: files
+template_folder: templates
 bonita_folder: /home/ubuntu/bonita
+
+open_api_release: 0.0.9

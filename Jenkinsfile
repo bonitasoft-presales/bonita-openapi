@@ -88,48 +88,19 @@ ssh -o StrictHostKeyChecking=no -i ~/.ssh/presale-ci-eu-west-1.pem  ubuntu@${pri
 """
             }
 
-            stage("Build open API resources") {
-                sh """
-cd ${WORKSPACE}
 
-# NOTE: requires npm on jenkins node, using commit files
-
-# clean & build openapi pivot files
-# add redoc images
-#npm run build
-# build postman collection file
-#npm run package
-
-# copy dist files to html static container
-mkdir -p ${WORKSPACE}/ansible/files/dist
-cp -r ${WORKSPACE}/dist/ ${WORKSPACE}/ansible/files/dist/
-cp -r ${WORKSPACE}/dist/ ${WORKSPACE}/ansible/files/nginx/content/
-ls -ltr ${WORKSPACE}/ansible/files/dist/
-ls -ltr ${WORKSPACE}/ansible/files/nginx/content/
-
-"""
-}
 
             stage("Deploy docker containers ") {
                 sh """
+cp ${WORKSPACE}/${stackName}.yaml ${WORKSPACE}/ansible/vars/aws_var.yaml
 cd ${WORKSPACE}/ansible
 ansible-playbook ${WORKSPACE}/ansible/ansible_scenario.yaml -i ${WORKSPACE}/aws/private-inventory-${stackName}.yaml
 """
-                // FIXME
-                def bonitaUrl = "http://${publicDnsName}:8081/bonita/login.jsp"
+                def bonitaUrl = "http://${publicDnsName}:8084"
                 currentBuild.description = "<a href='${bonitaUrl}'>${stackName}</a>"
             }
 
-            stage('Create yml parameter file') {
-                echo "yamlFile set to set server URL: ${yamlFile}"
-                if( fileExists(yamlFile)) {
-                    echo "remove existing file ${yamlFile}"
-                    sh "rm $yamlFile"
-                }
-                def yamlProps = [:]
-                yamlProps.global_parameters=[ [ name:'serverUrl',type:'String',value:"http://${yamlStackProps.publicDnsName}:8081/bonita"]]
-                writeYaml file:yamlFile, data:yamlProps
-            }
+
         } // timestamps
     } // ansiColor
 } // node
