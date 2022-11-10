@@ -14,6 +14,9 @@
     owner: "{{ bonita_user }}"
     group: "{{ bonita_group }}"
 
+- name: Ensures folder [{{bonita_folder}}/files/dist] exists
+  file: path={{bonita_folder}}/files/dist state=directory owner={{bonita_user}} group={{bonita_group}}
+
 - name: "Get bonita-openapi-{{ open_api_release }}.yaml"
   get_url:
     url: "https://github.com/bonitasoft/bonita-openapi/releases/download/{{ open_api_release }}/bonita-openapi-{{ open_api_release }}.yaml"
